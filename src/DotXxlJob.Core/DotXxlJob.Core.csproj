@@ -8,8 +8,8 @@
       <Copyright>Xuanye @ 2019</Copyright>
       <Authors>Xuanye</Authors>
       <AssemblyTitle>XxlJobExecutor DotNet port</AssemblyTitle>
-      <AssemblyName>DotXxlJob.Core</AssemblyName>
-      <PackageId>DotXxlJob.Core</PackageId>
+      <AssemblyName>Drone.DotXxlJob.Core</AssemblyName>
+      <PackageId>Drone.DotXxlJob.Core</PackageId>
       <Version>$(DotXxlJobPackageVersion)</Version>
       <PackageTags>Hession,xxl-job,DotXxlJob</PackageTags>
       <PackageReleaseNotes>

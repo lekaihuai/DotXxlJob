@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DotXxlJob.Core.Config;
 using DotXxlJob.Core.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -16,16 +17,18 @@ namespace DotXxlJob.Core
         private readonly AdminClient _adminClient;
         private readonly XxlJobExecutorOptions _options;
         private readonly ILogger<ExecutorRegistry> _logger;
+        private readonly IConfiguration _configuration;
 
-        public ExecutorRegistry(AdminClient adminClient, IOptions<XxlJobExecutorOptions> optionsAccessor, ILogger<ExecutorRegistry> logger)
+        public ExecutorRegistry(AdminClient adminClient, IOptions<XxlJobExecutorOptions> optionsAccessor, IConfiguration configuration, ILogger<ExecutorRegistry> logger)
         {
             Preconditions.CheckNotNull(optionsAccessor, "XxlJobExecutorOptions");
             Preconditions.CheckNotNull(optionsAccessor.Value, "XxlJobExecutorOptions");
             _adminClient = adminClient;
             _options = optionsAccessor.Value;
+            _configuration = configuration;
             if (string.IsNullOrEmpty(_options.SpecialBindAddress))
             {
-                _options.SpecialBindAddress = IPUtility.GetLocalIntranetIP().MapToIPv4().ToString();
+                _options.SpecialBindAddress = _configuration["MY_POD_IP"];
             }
             _logger = logger;
         }
