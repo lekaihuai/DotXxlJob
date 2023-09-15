@@ -10,7 +10,7 @@
       <AssemblyTitle>XxlJobExecutor DotNet port</AssemblyTitle>
       <AssemblyName>Drone.DotXxlJob.Core</AssemblyName>
       <PackageId>Drone.DotXxlJob.Core</PackageId>
-      <Version>$(DotXxlJobPackageVersion)</Version>
+      <Version>2.3.3</Version>
       <PackageTags>Hession,xxl-job,DotXxlJob</PackageTags>
       <PackageReleaseNotes>
        $(DotXxlJobPackageNotes)

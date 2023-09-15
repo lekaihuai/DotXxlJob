@@ -28,7 +28,8 @@ namespace DotXxlJob.Core.TaskExecutors
             {
                 return Task.FromResult(ReturnT.Failed($"job handler [{triggerParam.ExecutorHandler} not found."));
             }
-            var context = new JobExecuteContext(this._jobLogger, triggerParam.ExecutorParams, cancellationToken);
+            var context = new JobExecuteContext(this._jobLogger, triggerParam.ExecutorParams, triggerParam.BroadcastIndex,
+                triggerParam.BroadcastTotal, cancellationToken);
             return handler.Execute(context);
         }
     }
