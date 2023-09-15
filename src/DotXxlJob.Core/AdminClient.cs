@@ -12,6 +12,7 @@ using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Steeltoe.Discovery;
 
 namespace DotXxlJob.Core
 {
@@ -22,7 +23,7 @@ namespace DotXxlJob.Core
         private readonly ILogger<AdminClient> _logger;
         private List<AddressEntry> _addresses;
         private int _currentIndex;
-        private static readonly string MAPPING = "/api";
+        private static readonly string MAPPING = "xxl-job-admin/api";
         public AdminClient(IOptions<XxlJobExecutorOptions> optionsAccessor          
             , ILogger<AdminClient> logger)
         {
@@ -36,16 +37,21 @@ namespace DotXxlJob.Core
         private void InitAddress()
         {
             this._addresses = new List<AddressEntry>();
-            foreach (var item in this._options.AdminAddresses.Split(';'))
+            IDiscoveryClient discoveryClient = Furion.App.GetService<IDiscoveryClient>();
+            var services = discoveryClient.GetInstances("sdwrjxjyy.drone_manage_xxljob");
+            if (services != null && services.Any())
             {
-                try
-                {                 
-                    var entry = new AddressEntry { RequestUri = item+ MAPPING };
-                    this._addresses.Add(entry);
-                }
-                catch (Exception ex)
+                foreach (var service in services)
                 {
-                    this._logger.LogError(ex, "init admin address error.");
+                    try
+                    {
+                        var entry = new AddressEntry { RequestUri = service.Uri + MAPPING };
+                        this._addresses.Add(entry);
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logger.LogError(ex, "init admin address error.");
+                    }
                 }
             }
         }
